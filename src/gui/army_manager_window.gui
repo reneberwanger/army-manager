@@ -1,0 +1,285 @@
+window = {
+    name = "army_manager_window"
+    visible = "[GetVariableSystem.Exists('AA_window_open')]"
+    size = { 70% 80% }
+    maximumsize = { 1920 1080}
+    parentanchor = center|left
+    layer = middle
+    position = {200 0}
+    datacontext = "[GetPlayer]"
+    
+
+    using = Window_Background
+	using = Window_Decoration
+
+    attachto = {
+		widgetid = "army_window"
+		stackmode = top
+		inherit_data_context = yes
+	}
+
+    state = {
+        name = _show
+        using = Animation_FadeIn_Standard
+        on_start = "[CloseGameView( 'character_interaction_menu' )]"
+        on_start = "[GetScriptedGui( 'AA_open_window_sgui' ).Execute( GuiScope.SetRoot( Character.MakeScope ).End )]"
+    }
+    state = {
+        name = _hide
+        using = Animation_FadeOut_Standard
+    }
+
+    vbox = {
+        layoutpolicy_horizontal = expanding
+        layoutpolicy_vertical = expanding
+        using = Window_Margins
+
+        ### Cabeçalho Decorativo ###
+        header_pattern = {
+            layoutpolicy_horizontal = expanding
+            blockoverride "header_text"
+            {
+                text = manage_troops
+            }
+
+            blockoverride "button_close"
+            {
+                onclick = "[GetVariableSystem.Toggle('AA_window_open')]"
+            }
+        }
+
+        hbox = {
+            layoutpolicy_horizontal = expanding
+            using = Window_Margins
+            
+            expand = {}
+
+            hbox = {
+                spacing = 5
+                 button_standard = {
+                    text = create_troop
+                }
+
+                button_standard = {
+                    text = raise_troops
+                }
+            }
+           
+        }
+        
+        hbox = {
+            layoutpolicy_horizontal = expanding
+            layoutpolicy_vertical = expanding
+            spacing = 20
+            margin = { 20 20}
+
+            background = {
+                using = Background_Area
+            }
+
+            vbox = {
+                maximumsize = {400 -1}
+                layoutpolicy_horizontal = expanding
+                layoutpolicy_vertical = expanding
+                 background = {
+                    # using = Background_Area_Dark
+                }
+
+                text_label_center = {
+                    text = troops
+                    using = Font_Size_Big
+                }
+
+                scrollbox = {
+                    layoutpolicy_horizontal = expanding
+                    layoutpolicy_vertical = expanding
+                    
+                    blockoverride "scrollbox_content" {
+
+
+                        vbox = {
+
+                            background = {
+                                using = Background_Area_Dark
+                            }
+                            
+                            layoutpolicy_horizontal = expanding
+                            layoutpolicy_vertical = expanding
+                            spacing = 5
+                            margin = { 10 0 }
+                            margin_top = 5
+
+                            # vbox = {
+                            #     datamodel = "[Character.MakeScope.GetList( 'AA_troop_list' )]"
+                            #     layoutpolicy_horizontal = expanding
+                            #     layoutpolicy_vertical = expanding
+                                
+                            #     item = {
+                            #         datacontext = "[Scope.Army]"
+                            #         text_single = {
+                            #             text = "[Army.GetNameNoTooltip]"
+                            #         }
+                            #     }
+                            # }
+                            
+                            vbox = {
+                                datamodel = "[Character.MakeScope.GetList( 'AA_troop_list' )]"
+                                layoutpolicy_horizontal = expanding
+                                spacing = 10
+                                item = {
+
+                                    button_standard_clean = {
+                                        layoutpolicy_horizontal = expanding
+                                        size = {-1 110}
+
+                                        hbox = {
+                                            layoutpolicy_horizontal = expanding
+                                            margin = { 10 10}
+                                            spacing = 10
+                                            datacontext = "[Scope.Army]"
+                                            datacontext = "[Army.GetCommander]"
+                                            portrait_head_small = {}
+
+                                            vbox = {
+                                                layoutpolicy_horizontal = expanding
+                                                spacing = 10
+                                                text_single = {
+                                                    layoutpolicy_horizontal = expanding
+                                                    text = "[Army.GetNameNoTooltip]"
+                                                }
+
+                                                text_single = {
+                                                    text = "[Army.GetArmyQualityName]"
+                                                }
+
+
+                                                # icon = [Army.GetArmyQualityName]
+                                                expand = {}
+
+                                                hbox = {
+                                                    layoutpolicy_horizontal = expanding
+                                                    text_single = {
+                                                        layoutpolicy_horizontal = expanding
+                                                        text = "[Army.GetSoldierCount|*]"
+                                                    }
+
+                                                    
+
+                                                    hbox = {
+                                                        layoutpolicy_horizontal = expanding
+                                                        layoutpolicy_vertical = expanding
+
+                                                        
+                                                        vbox = {
+                                                            minimumsize = { 40 0 }
+                                                            layoutpolicy_vertical = expanding
+
+                                                            hbox = {
+                                                                datamodel = "[Army.GetCommander.GetTraits]"
+                                                                item = {
+                                                                    text_single = {
+                                                                        raw_text = "Asdad"
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            hbox = {
+                                                                layoutpolicy_horizontal = expanding
+                                                                margin_left = 5
+
+                                                                widget = {
+                                                                    size = { 45 35 }
+                                                                    visible = "[Character.IsValid]"
+                                                                    tooltip = "[Character.GetCommanderAdvantageDesc]"
+
+                                                                    hbox = {
+                                                                        name = "martial_skill_commander"
+                                                                        datacontext = "[ArmyWindow.GetCommanderMartialSkill]"
+
+                                                                        icon = {
+                                                                            name = "skill_icon"
+                                                                            texture = "gfx/interface/icons/icon_commander_advantage.dds"
+                                                                            size = { 30 30 }
+                                                                        }
+
+                                                                        text_single = {
+                                                                            name = "skill_value"
+                                                                            align = right|nobaseline
+                                                                            default_format = "#high"
+                                                                            text = "[Character.GetCommanderAdvantage]"
+                                                                        }
+
+                                                                        background = {
+                                                                            using = Background_Area_Dark
+                                                                            margin = {4 2}
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                expand = {}
+                                                            }
+                                                        
+                                                        }
+                                                        expand = {}
+                                                    }
+                                                }
+                                            }
+
+                                            expand = {}
+                                            
+                                            coa_realm_small = {
+                                                datacontext = "[Army.GetCommander]"
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            
+                            expand ={}
+                        }
+                    
+                    }
+
+
+                }
+
+            }
+
+            vbox = {
+                layoutpolicy_horizontal = expanding
+                layoutpolicy_vertical = expanding
+                
+                text_label_center = {
+                    text = manage_troop
+                    using = Font_Size_Big
+                }
+
+                expand = {}
+            }
+        }
+
+        hbox = {
+            layoutpolicy_horizontal = expanding
+             using = Window_Margins
+            
+            button_standard = {
+                text = delete_all_troops
+                enabled = no 
+            }
+
+            expand = {}
+
+            hbox = {
+                spacing = 5
+
+                button_standard = {
+                    text = CONFIRM
+                }
+
+            }
+           
+        }
+
+    }
+}

@@ -1,0 +1,2 @@
+gui/army_manager_hud_button.gui = army_manager_hud_button
+gui/army_manager_window.gui = army_manager_window

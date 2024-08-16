@@ -1,0 +1,34 @@
+window = {
+	name = "army_manager_hud_button"
+	parentanchor = right|bottom
+	datacontext = "[GetVariableSystem]"
+	visible = "[And(IsGameViewOpen('military'), GetVariableSystem.HasValue( 'military_view_tabs', 'troops' ))]"
+
+	size = { 0 0 }
+	position = {-245 -190}
+	allow_outside = yes
+	layer = top
+
+
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	flowcontainer = {
+		direction = vertical
+
+		button_standard = {
+			size = { 175 32 }
+			onclick = "[GetVariableSystem.Toggle('AA_window_open')]"
+			text = manage_troops
+		}
+
+	}
+}

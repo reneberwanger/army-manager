@@ -1,0 +1,53 @@
+﻿AA_open_window_sgui = {
+    scope = character
+
+    effect = {
+        clear_variable_list = AA_troop_list
+        clear_variable_list = AA_commander_list
+		clear_variable_list = AA_commander_trait_list
+
+		# ARMY LIST OF CHARACTER
+        every_army = {                 		
+			save_scope_as = army
+
+			root = {               
+				add_to_variable_list = {
+					name = AA_troop_list
+					target = scope:army
+				}
+
+
+				# COMMANDER OF THIS ARMY
+				scope:army.army_commander = {         			
+					# save_scope_as = cmdr   
+					
+					root = {               
+						add_to_variable_list = {
+							name = AA_commander_list
+							target = prev
+						}
+
+
+						# TRAITS OF THIS COMMANDER
+						every_character_trait = {    
+
+							limit = {
+								has_trait_category = commander
+							}
+
+							# save_scope_as = trait    
+							root = {                 
+								add_to_variable_list = {
+									name = AA_commander_trait_list
+									target = prev
+								}
+							}
+						}
+					}
+					
+				}
+			}
+			
+        }
+    }
+}
